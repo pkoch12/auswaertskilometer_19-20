@@ -2,7 +2,7 @@
 An analysis of away fans of the Bundesliga teams in the 19/20 season in an interactive graphic.
 This project is a simple website that calculates and visualizes the distances traveled by football teams in the 2019/2020 season for away matches. It provides an interface to explore the travel distances of various clubs and compare their travel efforts.
 
-![From Earth to Mars with football](main/wp_fans_mars_erde__1024.png)
+![From Earth to Mars with football](wp_fans_mars_erde__1024.png)
 
 ## Features
 
