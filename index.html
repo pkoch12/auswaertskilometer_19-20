@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<title>Die Reise der Auswärtsfans</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+		integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+		crossorigin="" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/leaflet-search.css" />
+	<link rel="stylesheet" href="css/main.css" />
+
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjyR9pjfYcIqIqepBL4BCKCqC4wq7VBmU" async
+		defer></script>
+
+	<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+		integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+		crossorigin=""></script>
+
+	<script src="js/Leaflet.Geodesic.js"></script>
+	<script src="js/AnimatedMarker.js"></script>
+
+	<!-- <script src='https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js'></script> -->
+
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+
+	<script src="data/wp_data-master_spieltag_19-20_1.geojson"></script>
+
+	<script src="js/leaflet-search.js"></script>
+
+
+</head>
+
+<body>
+
+	<div id="title">
+		<h1>Die Reise der Auswärtsfans</h1>
+	</div>
+	<div id="menu">
+		<p>
+			<label id="amountLabel" for="amount"></label>
+			<input type="text" id="amount" size="25" />
+		</p>
+		<div id="play"> <i class="fa fa-play"></i> </div>
+		<div id="stop"><i class="fa fa-pause"></i></div>
+		<div id="slider-range"></div>
+		<!-- <div id="findbox"></div> -->
+		<div id="airline-select">
+			<select id="airline" name="airlines">
+				<option value="all" selected>Alle Vereine</option>
+			<!-- 	<option value="FCA">FC Augsburg</option>
+				<option value="FCU">1. FC Union Berlin</option>
+				<option value="BSC">Hertha BSC</option>
+				<option value="SVW">SV Werder Bremen</option>
+				<option value="BVB">Borussia Dortmund</option>
+				<option value="F95">Fortuna Düsseldorf</option>
+				<option value="FRA">Eintracht Frankfurt</option>
+				<option value="SCF">SC Freiburg</option>
+				<option value="TSG">TSG 1899 Hoffenheim</option>
+				<option value="KOE">1. FC Köln</option>
+				<option value="RBL">RB Leipzig</option>
+				<option value="B04">Bayer 04 Leverkusen</option>
+				<option value="M05">FSV Mainz 05</option>
+				<option value="BMG">Borussia M'gladbach</option>
+				<option value="FCB">FC Bayern München</option>
+				<option value="SCP">SC Paderborn</option>
+				<option value="S04">FC Schalke 04</option>
+				<option value="WOB">VfL Wolfsburg</option> -->
+			</select>
+		</div>
+		<div id="flugplan">Spieltag:</div>
+		<div id="showflightplan"></div>
+	</div>
+
+	<div id="mapid">
+		<div id="info">&#9432;</div>
+	</div>
+
+	<div id="popup">
+		<div id="close">X</div>
+		<h2>Auswärtsfans der Bundesligasaison 19/20</h2>
+		<h3>Routen der Clubanhänger pro Spieltag und Verein</h3>
+		<p>Tausende Fans füllen jeden Spieltag die Stadien der Bundesliga. Um ihren Verein auch Auswärts zu
+			unterstützen, reisen sie quer durch Deutschland.</p>
+		<h3>Was zeigt die Karte?</h3>
+		<p>Die Karte zeigt die die Routen, die Fans der Gastmannschaften zurücklegen. Dabei kann nach Spieltag und
+			Verein gefiltert werden.</p>
+		<p>Sie haben noch Fragen, Anmerkungen oder einen Fehler entdeckt? <a
+				href="mailto:patrick.koch1@smail.th-koeln.de">Schreiben Sie uns!</a></p>
+		<p><i>Diese Anwendung nutzt <a href="https://github.com/henrythasler/Leaflet.Geodesic"
+					target="_blank">Leaflet.Geodesic</a> unter <a
+					href="https://github.com/henrythasler/Leaflet.Geodesic/blob/master/LICENSE" target="_blank">GNU
+					General Public License v3.0</a>, <a href="https://github.com/openplans/Leaflet.AnimatedMarker"
+					target="_blank">Leaflet.AnimatedMarker</a> unter <a
+					href="https://github.com/openplans/Leaflet.AnimatedMarker/blob/master/LICENSE" target="_blank">MIT
+					License</a> sowie <a href="https://gitlab.com/IvanSanchez/Leaflet.GridLayer.GoogleMutant"
+					target="_blank">Leaflet.GridLayer.GoogleMutant</a> unter "The Beer-Ware License"</i></p>
+	</div>
+
+	<div id="browserWarning">
+		<h2>Ihre Browser-Version wird möglicherweise nicht unterstützt</h2>
+		<h3 id="browser"></h3>
+		<p>Einige Funktionen unserer interaktiven Karte werden von diesem Browser nicht unterstützt. Wir empfehlen eine
+			aktuelle Version von Mozilla Firefox, Google Chrome oder Apple Safari zu nutzen. <a
+				href="https://browsehappy.com/" target="_blank">Aktuelle Versionen finden Sie unter hier.</a></p>
+		<h3 id="weiter">Weiter zur Karte</h3>
+	</div>
+
+	<div id="noflights"></div>
+
+	<script>
+
+		navigator.sayswho = (function () {
+			var ua = navigator.userAgent, tem,
+				M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+			if (/trident/i.test(M[1])) {
+				tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+				return 'IE ' + (tem[1] || '');
+			}
+			if (M[1] === 'Chrome') {
+				tem = ua.match(/\b(OPR|Edge)\/(\d+)/);
+				if (tem != null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+			}
+			M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+			if ((tem = ua.match(/version\/(\d+)/i)) != null) M.splice(1, 1, tem[1]);
+			return M.join(' ');
+		})();
+
+
+
+		$("#browser").append("Sie verwenden " + navigator.sayswho + ".");
+
+		console.log(navigator.sayswho);
+
+		if (navigator.sayswho === "IE 11") {
+			$("#browserWarning").fadeIn();
+		}
+
+		$("#weiter").click(function () {
+			$("#browserWarning").fadeOut();
+		});
+
+		var play = false;
+		var alleFluege = 0;
+		var alleFlugziele = 0;
+
+		$("#info").click(function () {
+			$("#popup").fadeToggle();
+		});
+		$("#close").click(function () {
+			console.log("hello world");
+			$("#popup").fadeOut();
+		});
+
+		var airline = "all";
+
+
+		$("#airline").change(function () {
+			airline = $("#airline").val();
+			applyFilter();
+			/*
+			var bounds = flugziele.getBounds();
+			map.fitBounds(bounds);
+			*/
+		})
+
+		var cgn = new L.LatLng(50.870792, 7.138362);
+		var mia = new L.LatLng(25.798183, -80.292710);
+
+		var starttime = 1565913600
+		var time = starttime;
+		var spieltag = 1;
+		// var end = 1514592000;
+		var flugziele;
+		var airplanes;
+
+
+		var lines = new L.Polyline([cgn, cgn]);
+		var linesArray = [new L.Polyline([cgn, cgn])];
+		var airplanesArray = [];
+		var monthsArray = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+
+
+		function displayTime() {
+			$("#amount").val(spieltag /* (new Date($( "#slider-range" ).slider( "values", 0 )*1000).getDate()) + "." + */ /* monthsArray[(new Date($("#slider-range").slider("values", 0) * 1000).getMonth())] + " " + (new Date($("#slider-range").slider("values", 0) * 1000).getFullYear()) */);
+		}
+
+		$(function () {
+			$("#slider-range").slider({
+				range: false,
+				min: /*1565913600*/1,
+				max: /*1589587200*/34,
+				step: /*26352*/1,
+				values: [/* time */ 1],
+				slide: function (event, ui) {
+					play = true;
+					$("#amount").val( ui.values[ 0 ]/* (new Date( ui.values[ 0 ] *1000).getDate()) + "." + */ /* monthsArray[(new Date(ui.values[0] * 1000).getMonth())] + " " + (new Date(ui.values[0] * 1000).getFullYear()) */);
+					time = /* new Date(ui.values[0]).getTime() */1565913600;
+					spieltag = ui.values[0];
+					//	end = new Date(ui.values[ 1 ]).getTime();
+					//	console.log(start + " - " + end);
+					applyFilter();
+				},
+				stop: function () {
+					play = false;
+					applyFilter();
+				}
+			});
+			displayTime();
+
+		});
+
+		// var runningTime = 1167609600;
+
+		$("#play").one("click", function () {
+			console.log("hello");
+			/* time = 1170291600; */
+			spieltag = 1
+		});
+
+		$("#play").click(function () {
+			/* if (time >= 1565913600) {
+				time = 1565913600;
+			} */
+			if( spieltag >= 1) {
+				spieltag = 1
+			}
+
+			$("#play").fadeOut();
+			$("#stop").fadeIn();
+			play = true;
+			var my = setInterval(autoplay, 3000);
+
+			function autoplay() {
+				/* time = time + 200000; */
+				spieltag = spieltag + 1
+				$("#slider-range").slider('values', 0, spieltag/* time */);
+				//time = new Date(time).getTime();
+				applyFilter();
+				displayTime();
+				if (/* time >= 1589587200 */spieltag >= 34) {
+					window.clearInterval(my);
+					$("#stop").fadeOut();
+					$("#play").fadeIn();
+					applyFilter();
+				}
+			}
+			$("#stop").click(function () {
+				$("#stop").fadeOut();
+				$("#play").fadeIn();
+				window.clearInterval(my);
+				play = false;
+				applyFilter();
+			});
+		});
+
+
+
+		var map = L.map('mapid', {
+			scrollWheelZoom: true,
+			zoomControl: true,
+			maxZoom: 14,
+		}).setView([50.5345, 9.6922], 6.1);
+
+		var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 19,
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+
+
+
+		/* var domIcon = L.icon({
+			iconUrl: 'dom_express.png',
+
+			iconSize: [50, 50], // size of the icon
+			iconAnchor: [22, 50], // point of the icon which will correspond to marker's location
+			popupAnchor: [-7, -50] // point from which the popup should open relative to the iconAnchor
+		}); */
+
+		var airplaneIcon = L.icon({
+			iconUrl: 'location.png',
+
+			iconSize: [15, 15],
+		});
+
+
+		/* var marker_cgn = new L.Marker(cgn, { icon: domIcon }).addTo(map); */
+
+		var lineStyle = {
+			color: '#040221',
+			weight: 1,
+			opacity: 0.5,
+			steps: 200
+		}
+
+		function applyFilter() {
+			/*
+				map.eachLayer(function (layer) {
+					map.removeLayer(layer);
+				}); */
+
+			//	flugziele.clearLayers();
+
+
+
+			airplanesArray = [];
+			linesArray = [];
+			map.removeLayer(airplanes);
+			map.removeLayer(lines);
+			map.removeLayer(flugziele);
+
+			buildLayer();
+
+			/*
+				if (alleFluege === 0) {
+					console.log(alleFluege);
+					$("#noflights").fadeIn();
+				}
+				else {
+					$("#noflights").fadeOut();
+				}
+			*/
+
+		}
+
+
+		function buildLayer() {
+			console.log("function buildLayer() start");
+			alleFlugziele = 0;
+			alleFluege = 0;
+
+			if (airline == "all") {
+				console.log("airline = all selected");
+				lineStyle.color = "#040221";
+				flugziele = L.geoJSON(fluege, {
+
+					pointToLayer: function (feature, latlon1) {
+						return L.circleMarker(latlon1, {
+							radius: Math.max(5, (feature.properties.anzahl_afans / 350)),
+							fillColor: "#040221",
+							color: "white",
+							weight: 1,
+							opacity: 1,
+							fillOpacity: 0.7
+						});
+					},
+					filter: function (feature, layer) {
+						return feature.properties.spieltag == spieltag/* (feature.properties.unix_start < time && feature.properties.unix_end > time) */;
+					},
+					onEachFeature: onEachFeature,
+
+				});
+
+				console.log("flugziele: " + flugziele);
+			}
+
+
+
+			else if (airline == "FCB") {
+
+
+
+				lineStyle.color = "red";
+				flugziele = L.geoJSON(fluege, {
+					pointToLayer: function (feature, latlon1) {
+						return L.circleMarker(latlon1, {
+							radius: Math.max(5, (feature.properties.anzahl_afans / 10)),
+							fillColor: "red",
+							color: "white",
+							weight: 1,
+							opacity: 1,
+							fillOpacity: 0.7
+						});
+					},
+					filter: function (feature, layer) {
+						return feature.properties.spieltag == spieltag/* (feature.properties.unix_start < time && feature.properties.unix_end > time && feature.properties.AB >= 1) */;
+					},
+					onEachFeature: onEachFeature,
+				}).addTo(map);
+			}
+			else if (airline == "_4U") {
+				lineStyle.color = "#67103D";
+				flugziele = L.geoJSON(fluege, {
+					pointToLayer: function (feature, latlng) {
+						return L.circleMarker(latlng, {
+							radius: Math.max(5, (feature.properties._4U / 10)),
+							fillColor: "#67103D",
+							color: "white",
+							weight: 1,
+							opacity: 1,
+							fillOpacity: 0.7
+						});
+					},
+					filter: function (feature, layer) {
+						return feature.properties.spieltag == spieltag/* (feature.properties.unix_start < time && feature.properties.unix_end > time && feature.properties._4U >= 1) */;
+					},
+					onEachFeature: onEachFeature,
+				}).addTo(map);
+			}
+			else if (airline == "EW") {
+
+				lineStyle.color = "#0A97C3";
+
+				flugziele = L.geoJSON(fluege, {
+					pointToLayer: function (feature, latlng) {
+						return L.circleMarker(latlng, {
+							radius: Math.max(5, (feature.properties.EW / 10)),
+							fillColor: "#0A97C3",
+							color: "white",
+							weight: 1,
+							opacity: 1,
+							fillOpacity: 0.7
+						});
+					},
+					filter: function (feature, layer) {
+						return feature.properties.spieltag == spieltag /* (feature.properties.unix_start < time && feature.properties.unix_end > time && feature.properties.EW >= 1) */;
+					},
+					onEachFeature: onEachFeature,
+				}).addTo(map);
+			}
+
+			else if (airline == "LH") {
+				lineStyle.color = "#00005B";
+				flugziele = L.geoJSON(fluege, {
+					pointToLayer: function (feature, latlng) {
+						return L.circleMarker(latlng, {
+							radius: Math.max(5, (feature.properties.LH / 10)),
+							fillColor: "#00005B",
+							color: "white",
+							weight: 1,
+							opacity: 1,
+							fillOpacity: 0.7
+						});
+					},
+					filter: function (feature, layer) {
+						return feature.properties.spieltag == spieltag/* (feature.properties.unix_start < time && feature.properties.unix_end > time && feature.properties.LH >= 1) */;
+					},
+					onEachFeature: onEachFeature,
+				}).addTo(map);
+			}
+
+			else if (airline == "FR") {
+				lineStyle.color = "#0B2F85";
+				flugziele = L.geoJSON(fluege, {
+					pointToLayer: function (feature, latlng) {
+						return L.circleMarker(latlng, {
+							radius: Math.max(5, (feature.properties.FR / 10)),
+							fillColor: "#0B2F85",
+							color: "white",
+							weight: 1,
+							opacity: 1,
+							fillOpacity: 0.7
+						});
+					},
+					filter: function (feature, layer) {
+						return feature.properties.spieltag == spieltag /* (feature.properties.unix_start < time && feature.properties.unix_end > time && feature.properties.FR >= 1) */;
+					},
+					onEachFeature: onEachFeature,
+				}).addTo(map);
+			}
+
+			else if (airline == "X3") {
+				lineStyle.color = "#ED0000";
+				flugziele = L.geoJSON(fluege, {
+					pointToLayer: function (feature, latlng) {
+						return L.circleMarker(latlng, {
+							radius: Math.max(5, (feature.properties.X3 / 10)),
+							fillColor: "#ED0000",
+							color: "white",
+							weight: 1,
+							opacity: 1,
+							fillOpacity: 0.7
+						});
+					},
+					filter: function (feature, layer) {
+						return feature.properties.spieltag == spieltag/* (feature.properties.unix_start < time && feature.properties.unix_end > time && feature.properties.X3 >= 1) */;
+					},
+					onEachFeature: onEachFeature,
+				}).addTo(map);
+			}
+
+			else if (airline == "DE") {
+				lineStyle.color = "#45413F";
+				flugziele = L.geoJSON(fluege, {
+					pointToLayer: function (feature, latlng) {
+						return L.circleMarker(latlng, {
+							radius: Math.max(5, (feature.properties.DE / 10)),
+							fillColor: "#45413F",
+							color: "white",
+							weight: 1,
+							opacity: 1,
+							fillOpacity: 0.7
+						});
+					},
+					filter: function (feature, layer) {
+						return feature.properties.spieltag == spieltag/* (feature.properties.unix_start < time && feature.properties.unix_end > time && feature.properties.DE >= 1) */;
+					},
+					onEachFeature: onEachFeature,
+				}).addTo(map);
+			}
+			else if (airline == "XQ") {
+				lineStyle.color = "#45413F";
+				flugziele = L.geoJSON(fluege, {
+					pointToLayer: function (feature, latlng) {
+						return L.circleMarker(latlng, {
+							radius: Math.max(5, ((feature.properties.XQ + feature.properties.XG) / 10)),
+							fillColor: "#45413F",
+							color: "white",
+							weight: 1,
+							opacity: 1,
+							fillOpacity: 0.7
+						});
+					},
+					filter: function (feature, layer) {
+						return feature.properties.spieltag == spieltag/* (feature.properties.unix_start < time && feature.properties.unix_end > time && (feature.properties.XQ >= 1 || feature.properties.XG >= 1)) */;
+					},
+					onEachFeature: onEachFeature,
+				}).addTo(map);
+			}
+
+			else if (airline == "TK") {
+				lineStyle.color = "#45413F";
+				flugziele = L.geoJSON(fluege, {
+					pointToLayer: function (feature, latlng) {
+						return L.circleMarker(latlng, {
+							radius: Math.max(5, (feature.properties.TK / 10)),
+							fillColor: "#45413F",
+							color: "white",
+							weight: 1,
+							opacity: 1,
+							fillOpacity: 0.7
+						});
+					},
+					filter: function (feature, layer) {
+						return feature.properties.spieltag == spieltag/* (feature.properties.unix_start < time && feature.properties.unix_end > time && feature.properties.TK >= 1) */;
+					},
+					onEachFeature: onEachFeature,
+				}).addTo(map);
+			}
+
+			else if (airline == "DY") {
+				lineStyle.color = "#D31732";
+				flugziele = L.geoJSON(fluege, {
+					pointToLayer: function (feature, latlng) {
+						return L.circleMarker(latlng, {
+							radius: Math.max(5, (feature.properties.DY / 10)),
+							fillColor: "#D31732",
+							color: "white",
+							weight: 1,
+							opacity: 1,
+							fillOpacity: 0.7
+						});
+					},
+					filter: function (feature, layer) {
+						return feature.properties.spieltag == spieltag/* (feature.properties.unix_start < time && feature.properties.unix_end > time && feature.properties.DY >= 1) */;
+					},
+					onEachFeature: onEachFeature,
+				}).addTo(map);
+			}
+
+			else if (airline == "PC") {
+				lineStyle.color = "#EA1920";
+				flugziele = L.geoJSON(fluege, {
+					pointToLayer: function (feature, latlng) {
+						return L.circleMarker(latlng, {
+							radius: Math.max(5, (feature.properties.PC / 10)),
+							fillColor: "#EA1920",
+							color: "white",
+							weight: 1,
+							opacity: 1,
+							fillOpacity: 0.7
+						});
+					},
+					filter: function (feature, layer) {
+						return feature.properties.spieltag == spieltag /* (feature.properties.unix_start < time && feature.properties.unix_end > time && feature.properties.PC >= 1) */;
+					},
+					onEachFeature: onEachFeature,
+				}).addTo(map);
+			}
+
+			// marker_cgn.unbindPopup();
+			// marker_cgn.bindPopup("<b>Köln-Bonn</b><br>IATA-Code: CGN<br>Flüge pro Woche: " + alleFluege + "<br>Ziele von Köln aus: " + alleFlugziele);
+
+			// $("#showflightplan").text(flightplan);
+
+			buildLines();
+		}
+
+		function buildLines() {
+			lines = L.layerGroup(linesArray);
+			airplanes = L.layerGroup(airplanesArray);
+			lines.addTo(map);
+			//	console.log(airplanesArray);
+
+			/* if (play == false) {
+				airplanes.addTo(map);
+			} */
+			airplanes.addTo(map);
+
+			flugziele.addTo(map);
+
+		}
+
+		buildLayer();
+
+		function onEachFeature(feature, layer) {
+			console.log("function onEachFeature() start");
+
+			alleFlugziele = alleFlugziele + 1;
+
+
+
+			//	flightplan = feature.properties.Flugplan;
+
+			var popupContent = "<b>"+ feature.properties.spieltag + ". Spieltag <p>" + feature.properties.heim + "-Fans zu/zum " + feature.properties.gast +
+				"</b><p><br>Anzahl der Auswärtsfans: " + feature.properties.anzahl_afans +
+				"<br>Entfernung: " + feature.properties.entfernung + " km";
+
+			if (feature.properties.AB != null) {
+				popupContent += "<br>Air Berlin: " + feature.properties.AB;
+			}
+			if (feature.properties.DE != null) {
+				popupContent += "<br>Condor: " + feature.properties.DE;
+			}
+			if (feature.properties.EW != null) {
+				popupContent += "<br>Eurowings: " + feature.properties.EW;
+			}
+			if (feature.properties._4U != null) {
+				popupContent += "<br>Germanwings: " + feature.properties._4U;
+			}
+			if (feature.properties.LH != null) {
+				popupContent += "<br>Lufthansa: " + feature.properties.LH;
+			}
+			if (feature.properties.FR != null) {
+				popupContent += "<br>Ryanair: " + feature.properties.FR;
+			}
+			if (feature.properties.XQ != null || feature.properties.XQ != null) {
+				popupContent += "<br>Sunexpress: " + (feature.properties.XQ + feature.properties.XG);
+			}
+			if (feature.properties.X3 != null) {
+				popupContent += "<br>TUIfly: " + feature.properties.X3;
+			}
+			if (feature.properties.TK != null) {
+				popupContent += "<br>Turkish Airlines: " + feature.properties.TK;
+			}
+			if (feature.properties.DY != null) {
+				popupContent += "<br>Norwegian: " + feature.properties.DY;
+			}
+			if (feature.properties.PC != null) {
+				popupContent += "<br>Pegasus Airlines: " + feature.properties.PC;
+			}
+			layer.bindPopup(popupContent, { maxHeight: 250, maxWidth: 250 });
+
+
+
+
+			alleFluege = alleFluege + feature.properties.Summe;
+
+
+
+			var lat1 = feature.properties.lat1;
+			var lon1 = feature.properties.lon1;
+			var latLon1 = new L.LatLng(lat1, lon1);
+			var lat2 = feature.properties.lat2;
+			var lon2 = feature.properties.lon2;
+			var latLon2 = new L.LatLng(lat2, lon2);
+			console.log(latLon1);
+			console.log(latLon2);
+			var Geodesic = L.geodesic([[latLon1, latLon2]], lineStyle);
+			var animatedMarker = L.animatedMarker(Geodesic._latlngs[0], {
+				distance: 500000,  // meters
+				interval: 1000, // milliseconds
+				icon: airplaneIcon,
+				onEnd: function () {
+					animatedMarker.unbindPopup();
+					animatedMarker.bindPopup(popupContent, { maxHeight: 250, maxWidth: 250 });
+				}
+			});
+			animatedMarker.bindPopup("<b>" + feature.properties.Code + "</b>", { maxHeight: 50, maxWidth: 50 });
+
+			/*
+			if (play == false) {
+				map.addLayer(animatedMarker);
+			}
+			*/
+			airplanesArray.push(animatedMarker);
+			linesArray.push(Geodesic);
+			//	 console.log(linesArray);
+		};
+
+		console.log(fluege);
+
+		/*
+		var searchControl = new L.Control.Search({
+				layer: flugziele,
+				textPlaceholder: 'Suchen...          ',
+				textErr: 'Nicht gefunden.',
+				propertyName: 'Flughafen',
+				marker: false,
+				zoom: 13,
+				container: 'findbox',
+				collapsed: false,
+				initial: false,
+			});
+		map.addControl( searchControl );  //inizialize search control
+		*/
+		/*
+		
+				var losangeles = new L.LatLng(34.05, -118.24);
+				var ny = new L.LatLng(40.73, -73.99);
+				var hav = new L.LatLng(23.11, -82.37);
+		
+				var line = L.polyline([losangeles, cgn]),
+					animatedMarker = L.animatedMarker(line.getLatLngs(), {
+							distance: 50000,  // meters
+							interval: 100, // milliseconds
+						});
+		
+		
+		
+				map.addLayer(line);
+				map.addLayer(animatedMarker);
+		
+		
+		var latocgn = L.geodesic([[losangeles, cgn]]);
+		var animatedMarker = L.animatedMarker(latocgn._latlngs[0], {
+			distance: 50000,  // meters
+			interval: 100, // milliseconds
+		});
+		
+		lineLats = line.getLatLngs();
+		
+		geoLats = latocgn._latlngs[0];
+		
+		
+		
+		map.addLayer(animatedMarker);
+		map.addLayer(latocgn);
+		*/
+
+
+
+
+	</script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,441 @@
+body {
+  font-family: "Arial", "Arial", sans-serif;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+}
+
+h1 {
+display: block;
+font-size: 1.3em;
+margin-top: 0em;
+margin-bottom: -5px;
+margin-left: 0.5em;
+margin-right: 0;
+font-weight: bold;
+color: #ffaa00;
+}
+h2 {
+display: block;
+text-align: center;
+font-size: 1.3em;
+margin-top: 0em;
+margin-bottom: 0px;
+margin-left: 0;
+margin-right: 0;
+font-weight: bold;
+color: red;
+}
+h3 {
+display: block;
+text-align: center;
+font-size: 1em;
+margin-top: 0em;
+margin-bottom: -5px;
+margin-left: 0;
+margin-right: 0;
+font-weight: bold;
+color: black;
+}
+
+#noflights {
+  position: absolute;
+  top: 117px;
+  z-index: 1001;
+  padding: 10px;
+  background-color: #FFFFB2;
+  width: 100%;
+  display: none;
+}
+
+#amount {
+  width: 130px;
+  border: 0;
+  color: #ffaa00;
+  font-weight: bold;
+  font-size: 0.9em;
+  position: absolute;
+  top: 85px;
+  right: 10px;
+}
+
+#amountLabel {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+}
+
+#airline-select {
+  position: absolute;
+  top: 60px;
+  right: 5px;
+  width: 130px;
+}
+
+#flugplan {
+  position: absolute;
+  width: 200px;
+  top: 60px;
+  left: 20px;
+}
+
+#showflightplan {
+  position: absolute;
+  top: 60px;
+  left: 90px;
+  color: #EA2119;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+#info {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  z-index: 1002;
+  font-size: 2em;
+  cursor: pointer;
+}
+
+#menu {
+  position: absolute;
+  padding: 5px;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  height: 105px;
+  width: 100%;
+  background-color: white;
+  border-bottom: 2px solid grey;
+}
+
+#title {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  //  border-bottom: 2px solid grey;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #040221;
+    z-index: 101;
+}
+
+#title > img {
+  float: left;
+  height: 35px;
+  margin-top: -6px;
+  margin-left: 4px;
+  margin-right: 10px;
+}
+
+#play {
+  position: absolute;
+  top: 88px;
+  left: 10px;
+  color: #ffaa00;
+  font-size: 1em;
+}
+
+#stop {
+  position: absolute;
+  top: 90px;
+  left: 10px;
+  color: #EA2119;
+  display: none;
+  font-size: 0.8em;
+}
+
+#slider-range {
+  position: absolute;
+  top: 91px;
+  left: 35px;
+  width: calc(100% - 200px);
+}
+
+#mapid {
+  position: absolute;
+  top: 110px;
+  left: 0px;
+  height: calc(100% - 110px);
+  width: 100vw;
+  z-index: 99;
+  &.swiping::after {
+    content: 'Use two fingers to move the map';
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+    font-size: 24px;
+    font-weight: 300;
+    justify-content:center;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    pointer-events:none;
+ }
+}
+
+#close {
+  position: absolute;
+  top: 5px;
+  right: 20px;
+  width: 10px;
+  height: 10px;
+  z-index: 1005;
+  cursor: pointer;
+}
+
+#popup {
+  display: none;
+  position: absolute;
+  top: 170px;
+  left: 15px;
+  width: calc(100vw - 55px);
+  z-index: 1005;
+  background-color: white;
+  padding: 10px;
+  padding-right: 10px;
+//  border: 2px solid red;
+  max-height: calc(100vh - 270px);
+  overflow: scroll;
+  box-shadow: 2px 2px 2px rgba(34,34,34,0.6);
+  border-radius: 4px;
+}
+
+#browserWarning {
+  text-align: center;
+  display: none;
+  position: absolute;
+  top: 170px;
+  left: 15px;
+  width: calc(100vw - 55px);
+  z-index: 1005;
+  background-color: white;
+  padding: 10px;
+  padding-right: 10px;
+//  border: 2px solid red;
+  max-height: calc(100vh - 270px);
+  overflow: scroll;
+  box-shadow: 2px 2px 2px rgba(34,34,34,0.6);
+  border-radius: 4px;
+}
+
+#weiter {
+  cursor: pointer;
+}
+
+
+@media only screen and (width: 620px) {
+
+
+  .popup > img {
+    top: 15px;
+    left: 7px;
+    width: 100px;
+  }
+
+  .popup > h1 {
+    top:0px;
+    width: 350px;
+    left: 105px;
+  	font-size: 25px;
+  }
+
+  .button {
+    width: 165px;
+    height: 20px;
+    padding-top: 5px;
+  }
+
+  .question {
+    top: 30px;
+    left: 100px;
+    z-index: 1000;
+  }
+
+  .question > img {
+    position: absolute;
+    width: 225px;
+    left: 100px;
+  }
+
+  .question > p {
+    position: absolute;
+    top: 225px;
+  }
+
+  .answer {
+    position: absolute;
+    top: 25px;
+  }
+
+  #social {
+    left: 170px;
+  }
+
+  #weiter, #los {
+    top: 310px;
+    left: 37vw;
+    z-index: 1000;
+  }
+
+
+}
+
+@media only screen and (min-width: 940px) {
+  .popup > img {
+    top: 15px;
+    left: 15px;
+    width: 150px;
+  }
+
+  .popup > h1 {
+    top:0px;
+    width: 350px;
+    left: 180px;
+  	font-size: 30px;
+  }
+
+  .button {
+    width: 200px;
+    height: 40px;
+  }
+
+  .question {
+    top: 30px;
+    left: 200px;
+    z-index: 1000;
+  }
+
+  .question > img {
+    position: absolute;
+    width: 250px;
+    left: 160px;
+  }
+
+  .question > p {
+    position: absolute;
+    top: 260px;
+    width: 60vw;
+    font-size: 20px;
+  }
+
+  .answer {
+    position: absolute;
+    top: 25px;
+    font-size: 20px;
+  }
+
+  #social {
+    left: 270px;
+  }
+  #flugplan {
+    right: 10px;
+  }
+
+
+
+}
+
+@media only screen and (max-width: 320px) {
+  h1 {
+    font-size: 1.1em;
+  }
+  #airline-select {
+    top: 60px;
+    left: 170px;
+  }
+
+  #amount {
+    top: 85px;
+    right: 10px;
+  }
+  #flugplan {
+    top: 60px;
+    left: 10px;
+        font-size: 0.8em;
+  }
+
+  #showflightplan {
+    top: 60px;
+    left: 65px;
+    color: #ffaa00;
+    font-weight: bold;
+    font-size: 0.8em;
+  }
+}
+
+
+@media only screen and (min-width: 620px) {
+
+#airline-select {
+  top: 57px;
+  left: 150px;
+}
+
+#amount {
+  top: 57px;
+  right: 10px;
+}
+
+#flugplan {
+  position: absolute;
+  top: 60px;
+  left: 10px;
+}
+
+#showflightplan {
+  position: absolute;
+  top: 60px;
+  left: 80px;
+  color: #EA2119;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+#slider-range {
+  width: calc(100% - 70px);
+}
+}
+
+@media only screen and (min-width: 800px) {
+  #play {
+    top: 60px;
+    left: 375px;
+  }
+
+  #stop {
+    top: 60px;
+    left: 375px;
+  }
+
+  #slider-range {
+    position: absolute;
+    top: 61px;
+    left: 400px;
+    width: calc(100% - 580px);
+  }
+
+  #flugplan {
+    left: 10px;
+  }
+
+  #showflightplan {
+    left: 80px;
+  }
+
+  #menu {
+    height: 80px;
+  }
+
+  #mapid {
+    top: 90px;
+    height: calc(100% - 90px);
+  }
+}
