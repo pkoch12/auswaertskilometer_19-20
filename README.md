@@ -31,7 +31,7 @@ This project serves as a fun and interactive way for football fans to learn more
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](js/LICENSE).
 
 ---
 
