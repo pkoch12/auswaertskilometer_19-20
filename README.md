@@ -29,6 +29,14 @@ This project is a simple website that calculates and visualizes the distances tr
 
 This project serves as a fun and interactive way for football fans to learn more about the travel efforts of their favorite teams during the 2019/2020 season. It also demonstrates how to integrate mapping libraries with JavaScript for data visualization.
 
+## Limitations
+
+The calculation is based on the assumption that all fans have traveled the distance from the home stadium to the away stadium. To simplify matters, the analysis also shows the distance as the crow fly distance from the home stadium to the away stadium.
+
+Due to the pandemic and the associated ghost matches (matches without fans), only Matchdays 1 - 25 were taken into account.
+
+The data is based on information from [fussballmafia.de](fussballmafia.de). The data has not been verified by third parties.
+
 ## License
 
 This project is licensed under the [MIT License](js/LICENSE).
