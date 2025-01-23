@@ -4,9 +4,7 @@ This project is a simple website that calculates and visualizes the distances tr
 
 ![From Earth to Mars with football](wp_fans_mars_erde__1000.png)
 
-<figure class="video_container">
-<iframe title="Summe der Auswärtsfans der Bundesligisten der Saison 19/20 nach Vereinen" aria-label="Balken" id="datawrapper-chart-WCzlu" src="https://datawrapper.dwcdn.net/WCzlu/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="600" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r=0;r<e.length;r++)if(e[r].contentWindow===a.source){var i=a.data["datawrapper-height"][t]+"px";e[r].style.height=i}}}))}();
-</script>
+<div style="min-height:600px" id="datawrapper-vis-WCzlu"><script type="text/javascript" defer src="https://datawrapper.dwcdn.net/WCzlu/embed.js" charset="utf-8" data-target="#datawrapper-vis-WCzlu"></script><noscript><img src="https://datawrapper.dwcdn.net/WCzlu/full.png" alt="" /></noscript></div>
 
 ## Features
 
