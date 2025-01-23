@@ -4,7 +4,7 @@ This project is a simple website that calculates and visualizes the distances tr
 
 ![From Earth to Mars with football](wp_fans_mars_erde__1000.png)
 
-![most away fans by club](auswaertsfans_19-20_540_transp.png)
+![most away fans by club](auswaertsfans_19-20_540.png)
 
 [Show on Datawrapper.de](https://datawrapper.dwcdn.net/WCzlu/1/)
 
