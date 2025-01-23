@@ -4,6 +4,8 @@ This project is a simple website that calculates and visualizes the distances tr
 
 ![From Earth to Mars with football](wp_fans_mars_erde__1000.png)
 
+<div style="min-height:600px" id="datawrapper-vis-WCzlu"><script type="text/javascript" defer src="https://datawrapper.dwcdn.net/WCzlu/embed.js" charset="utf-8" data-target="#datawrapper-vis-WCzlu"></script><noscript><img src="https://datawrapper.dwcdn.net/WCzlu/full.png" alt="" /></noscript></div>
+
 ## Features
 
 - **Distance Visualization:** Displays the total distance traveled for away matches in kilometers.
