@@ -7,6 +7,7 @@ This project is a simple website that calculates and visualizes the distances tr
 ### Which club attracts the most away fans?
 
 <img src="auswaertsfans_19-20_540.png" alt="most away fans by club" width="540" />
+
 [Show on Datawrapper.de](https://datawrapper.dwcdn.net/WCzlu/1/)
 
 ## Features
